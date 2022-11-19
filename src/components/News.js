@@ -43,9 +43,9 @@ export default class News extends Component {
 
     let url = `https://newsapi.org/v2/top-headlines?country=${
       this.props.country
-    }&apiKey=e448d3d02a284a1588ab38b39a1e19f8&category=${this.props.category}&page=${
-      this.state.page - 1
-    }&pageSize=${this.props.pageSize}`;
+    }&apiKey=e448d3d02a284a1588ab38b39a1e19f8&category=${
+      this.props.category
+    }&page=${this.state.page - 1}&pageSize=${this.props.pageSize}`;
     this.setState({ loading: true });
     let data = await fetch(url);
     let parsedData = await data.json();
@@ -68,9 +68,9 @@ export default class News extends Component {
     ) {
       let url = `https://newsapi.org/v2/top-headlines?country=${
         this.props.country
-      }&apiKey=e448d3d02a284a1588ab38b39a1e19f8&category=${this.props.category}&page=${
-        this.state.page + 1
-      }&pageSize=${this.props.pageSize}`;
+      }&apiKey=e448d3d02a284a1588ab38b39a1e19f8&category=${
+        this.props.category
+      }&page=${this.state.page + 1}&pageSize=${this.props.pageSize}`;
       this.setState({ loading: true });
       let data = await fetch(url);
       let parsedData = await data.json();
@@ -101,6 +101,9 @@ export default class News extends Component {
                       : "https://img.global.news.samsung.com/global/wp-content/uploads/2022/11/Bixby_Availability_Thumb728.jpg"
                   }
                   newsUrl={element.url}
+                  author={element.author ? element.author : "Unknown"}
+                  date={new Date(element.publishedAt).toLocaleString()}
+                  source={element.source.name}
                 />
               </div>
             );
