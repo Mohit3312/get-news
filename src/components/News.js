@@ -62,29 +62,31 @@ export default class News extends Component {
     return (
       <div className="container">
         <h1 className="text-center my-4">GetNews - Top Headlines</h1>
-        {this.state.loading && <Spinner />}
-
-        <div className="row">
-          {this.state.articles.map((element) => {
-            return (
-              <div className="col-md-4" key={element.url}>
-                <NewsItem
-                  title={element.title ? element.title : ""}
-                  desc={element.description ? element.description : ""}
-                  imageUrl={
-                    element.urlToImage
-                      ? element.urlToImage
-                      : "https://img.global.news.samsung.com/global/wp-content/uploads/2022/11/Bixby_Availability_Thumb728.jpg"
-                  }
-                  newsUrl={element.url}
-                  author={element.author ? element.author : "Unknown"}
-                  date={new Date(element.publishedAt).toLocaleString()}
-                  source={element.source.name}
-                />
-              </div>
-            );
-          })}
-        </div>
+        {this.state.loading ? (
+          <Spinner />
+        ) : (
+          <div className="row">
+            {this.state.articles.map((element) => {
+              return (
+                <div className="col-md-4" key={element.url}>
+                  <NewsItem
+                    title={element.title ? element.title : ""}
+                    desc={element.description ? element.description : ""}
+                    imageUrl={
+                      element.urlToImage
+                        ? element.urlToImage
+                        : "https://img.global.news.samsung.com/global/wp-content/uploads/2022/11/Bixby_Availability_Thumb728.jpg"
+                    }
+                    newsUrl={element.url}
+                    author={element.author ? element.author : "Unknown"}
+                    date={new Date(element.publishedAt).toLocaleString()}
+                    source={element.source.name}
+                  />
+                </div>
+              );
+            })}
+          </div>
+        )}
         <div className="container d-flex justify-content-between">
           <button
             type="button"
