@@ -33,15 +33,16 @@ export default class News extends Component {
   }
 
   async updateNews() {
-    const url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&apiKey=e448d3d02a284a1588ab38b39a1e19f8&category=${this.props.category}&page=${this.state.page}&pageSize=${this.props.pageSize}`;
+    const url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&apiKey=${this.props.apiKey}&category=${this.props.category}&page=${this.state.page}&pageSize=${this.props.pageSize}`;
 
-    this.setState({ loading: true });
-    let data = await fetch(url);
-    let parsedData = await data.json();
-    this.setState({
-      articles: parsedData.articles,
-      totalResults: parsedData.totalResults,
-      loading: false,
+    this.setState({ loading: true }, async () => {
+      let data = await fetch(url);
+      let parsedData = await data.json();
+      this.setState({
+        articles: parsedData.articles,
+        totalResults: parsedData.totalResults,
+        loading: false,
+      });
     });
   }
 
@@ -50,16 +51,14 @@ export default class News extends Component {
   }
 
   fetchMoreData = async () => {
-    let updatedPage = this.state.page + 1;
-    console.log(this.state.page);
-    this.setState({ page: updatedPage });
-    const url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&apiKey=e448d3d02a284a1588ab38b39a1e19f8&category=${this.props.category}&page=${updatedPage}&pageSize=${this.props.pageSize}`;
-    console.log(this.state.page);
-    let data = await fetch(url);
-    let parsedData = await data.json();
-    this.setState({
-      articles: this.state.articles.concat(parsedData.articles),
-      totalResults: parsedData.totalResults,
+    this.setState({ page: this.state.page + 1 }, async () => {
+      const url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&apiKey=${this.props.apiKey}&category=${this.props.category}&page=${this.state.page}&pageSize=${this.props.pageSize}`;
+      let data = await fetch(url);
+      let parsedData = await data.json();
+      this.setState({
+        articles: this.state.articles.concat(parsedData.articles),
+        totalResults: parsedData.totalResults,
+      });
     });
   };
 
