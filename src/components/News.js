@@ -34,7 +34,7 @@ export default class News extends Component {
 
   async updateNews() {
     const url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&apiKey=e448d3d02a284a1588ab38b39a1e19f8&category=${this.props.category}&page=${this.state.page}&pageSize=${this.props.pageSize}`;
-    
+
     this.setState({ loading: true });
     let data = await fetch(url);
     let parsedData = await data.json();
@@ -77,26 +77,28 @@ export default class News extends Component {
           hasMore={this.state.articles.length < this.state.totalResults}
           loader={<Spinner />}
         >
-          <div className="row">
-            {this.state.articles.map((element) => {
-              return (
-                <div className="col-md-4" key={element.url}>
-                  <NewsItem
-                    title={element.title ? element.title : ""}
-                    desc={element.description ? element.description : ""}
-                    imageUrl={
-                      element.urlToImage
-                        ? element.urlToImage
-                        : "https://img.global.news.samsung.com/global/wp-content/uploads/2022/11/Bixby_Availability_Thumb728.jpg"
-                    }
-                    newsUrl={element.url}
-                    author={element.author ? element.author : "Unknown"}
-                    date={new Date(element.publishedAt).toLocaleString()}
-                    source={element.source.name}
-                  />
-                </div>
-              );
-            })}
+          <div className="container">
+            <div className="row">
+              {this.state.articles.map((element) => {
+                return (
+                  <div className="col-md-4" key={element.url}>
+                    <NewsItem
+                      title={element.title ? element.title : ""}
+                      desc={element.description ? element.description : ""}
+                      imageUrl={
+                        element.urlToImage
+                          ? element.urlToImage
+                          : "https://img.global.news.samsung.com/global/wp-content/uploads/2022/11/Bixby_Availability_Thumb728.jpg"
+                      }
+                      newsUrl={element.url}
+                      author={element.author ? element.author : "Unknown"}
+                      date={new Date(element.publishedAt).toLocaleString()}
+                      source={element.source.name}
+                    />
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </InfiniteScroll>
       </div>
