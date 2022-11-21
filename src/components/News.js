@@ -32,7 +32,6 @@ export default function News(props) {
     setTotalResults(parsedData.totalResults);
     setLoading(false);
     props.setProgress(100);
-    console.log(props.progress);
   };
 
   const fetchMoreData = async () => {
