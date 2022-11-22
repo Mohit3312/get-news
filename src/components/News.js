@@ -34,18 +34,25 @@ export default function News(props) {
     props.setProgress(100);
   };
 
-  const fetchMoreData = async () => {
-    const url = `https://newsapi.org/v2/top-headlines?country=${
-      props.country
-    }&apiKey=${props.apiKey}&category=${props.category}&page=${
-      page + 1
-    }&pageSize=${props.pageSize}`;
-    setPage(page + 1);
+  async function fetchData() {
+    console.log(page);
+    const url = `https://newsapi.org/v2/top-headlines?country=${props.country}&apiKey=${props.apiKey}&category=${props.category}&page=${page}&pageSize=${props.pageSize}`;
     let data = await fetch(url);
     let parsedData = await data.json();
     setArticles(articles.concat(parsedData.articles));
     setTotalResults(parsedData.totalResults);
+  }
+
+  const fetchMoreData = async () => {
+    setPage(page + 1);
   };
+
+  useEffect(() => {
+    if (page > 1) {
+      fetchData();
+    }
+    // eslint-disable-next-line
+  }, [page]);
 
   return (
     <div className="container">
