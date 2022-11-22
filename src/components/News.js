@@ -15,27 +15,25 @@ export default function News(props) {
   };
 
   useEffect(() => {
-    updateNews();
+    const fetchFirstPageData = async () => {
+      document.title = `GetNews - ${capitalize(props.category)}`;
+      props.setProgress(10);
+      const url = `https://newsapi.org/v2/top-headlines?country=${props.country}&apiKey=${props.apiKey}&category=${props.category}&page=${page}&pageSize=${props.pageSize}`;
+      setLoading(true);
+      let data = await fetch(url);
+      props.setProgress(30);
+      let parsedData = await data.json();
+      props.setProgress(70);
+      setArticles(parsedData.articles);
+      setTotalResults(parsedData.totalResults);
+      setLoading(false);
+      props.setProgress(100);
+    };
+    fetchFirstPageData();
     // eslint-disable-next-line
   }, []);
 
-  const updateNews = async () => {
-    document.title = `GetNews - ${capitalize(props.category)}`;
-    props.setProgress(10);
-    const url = `https://newsapi.org/v2/top-headlines?country=${props.country}&apiKey=${props.apiKey}&category=${props.category}&page=${page}&pageSize=${props.pageSize}`;
-    setLoading(true);
-    let data = await fetch(url);
-    props.setProgress(30);
-    let parsedData = await data.json();
-    props.setProgress(70);
-    setArticles(parsedData.articles);
-    setTotalResults(parsedData.totalResults);
-    setLoading(false);
-    props.setProgress(100);
-  };
-
-  async function fetchData() {
-    console.log(page);
+  async function fetchNextPageData() {
     const url = `https://newsapi.org/v2/top-headlines?country=${props.country}&apiKey=${props.apiKey}&category=${props.category}&page=${page}&pageSize=${props.pageSize}`;
     let data = await fetch(url);
     let parsedData = await data.json();
@@ -49,7 +47,7 @@ export default function News(props) {
 
   useEffect(() => {
     if (page > 1) {
-      fetchData();
+      fetchNextPageData();
     }
     // eslint-disable-next-line
   }, [page]);
